@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Battery Charging</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #222;
+      text-shadow: 1px 1px 4px #ccc;
+    }
+
+    .battery-holder {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+
+    .battery {
+      width: 100px;
+      height: 240px;
+      border: 4px solid #333;
+      border-radius: 12px;
+      background-color: #ddd;
+      position: relative;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: space-between;
+      padding: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .battery:hover {
+      transform: scale(1.05);
+    }
+
+    .battery::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: 30%;
+      width: 40%;
+      height: 18px;
+      background-color: #333;
+      border-radius: 4px;
+    }
+
+    .segment {
+      height: 20%;
+      margin: 5px 0;
+      width: 100%;
+      background-color: #999;
+      border-radius: 6px;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .charging {
+      animation: shimmer 1s infinite;
+    }
+
+    .active-1 { background-color: #f44336; }
+    .active-2 { background-color: #ff9800; }
+    .active-3 { background-color: #ffeb3b; }
+    .active-4 { background-color: #4caf50; }
+
+    @keyframes shimmer {
+      0% { box-shadow: 0 0 5px rgba(255,255,255,0.2); }
+      50% { box-shadow: 0 0 20px rgba(255,255,255,0.7); }
+      100% { box-shadow: 0 0 5px rgba(255,255,255,0.2); }
+    }
+
+    .percentage-inside {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: #111;
+    }
+
+    .footer {
+      margin-top: 50px;
+      color: #333;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .floating-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffcc00;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .floating-button:hover {
+      transform: scale(1.1);
+      background-color: #ff9900;
+    }
+
+    .battery-label {
+      font-size: 1.1rem;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    .battery-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .eta {
+      margin-top: 5px;
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Charging Station 🔌</h1>
+
+  <div class="battery-holder">
+    <div class="battery-box">
+      <div class="battery" id="battery1">
+        <div class="segment" id="b1s4"></div>
+        <div class="segment" id="b1s3"></div>
+        <div class="segment" id="b1s2"></div>
+        <div class="segment" id="b1s1"></div>
+        <div class="percentage-inside" id="p1">73%</div>
+      </div>
+      <div class="battery-label">Battery 1</div>
+      <div class="eta" id="eta1">Estimated time: --</div>
+    </div>
+
+    <div class="battery-box">
+      <div class="battery" id="battery2">
+        <div class="segment" id="b2s4"></div>
+        <div class="segment" id="b2s3"></div>
+        <div class="segment" id="b2s2"></div>
+        <div class="segment" id="b2s1"></div>
+        <div class="percentage-inside" id="p2">61%</div>
+      </div>
+      <div class="battery-label">Battery 2</div>
+      <div class="eta" id="eta2">Estimated time: --</div>
+    </div>
+
+    <div class="battery-box">
+      <div class="battery" id="battery3">
+        <div class="segment" id="b3s4"></div>
+        <div class="segment" id="b3s3"></div>
+        <div class="segment" id="b3s2"></div>
+        <div class="segment" id="b3s1"></div>
+        <div class="percentage-inside" id="p3">77%</div>
+      </div>
+      <div class="battery-label">Battery 3</div>
+      <div class="eta" id="eta3">Estimated time: --</div>
+    </div>
+  </div>
+
+  <div class="footer">⚙️ Powered by Footstep Energy</div>
+
+  <button class="floating-button" onclick="goBack()">⬅️</button>
+
+  <script>
+    let batteryLevels = [73, 61, 77];
+    let currentBattery = 0;
+    const delay = 47000;
+    const timePerPercent = 47;
+
+    function clearChargingEffects() {
+      for (let b = 1; b <= 3; b++) {
+        for (let s = 1; s <= 4; s++) {
+          document.getElementById(`b${b}s${s}`).classList.remove('charging');
+        }
+      }
+    }
+
+    function updateBatteryUI(batteryId) {
+      const level = batteryLevels[batteryId - 1];
+      const segments = [
+        document.getElementById(`b${batteryId}s1`),
+        document.getElementById(`b${batteryId}s2`),
+        document.getElementById(`b${batteryId}s3`),
+        document.getElementById(`b${batteryId}s4`)
+      ];
+
+      const activeCount = Math.floor(level / 25);
+
+      segments.forEach((segment, index) => {
+        segment.className = 'segment';
+        if (index < activeCount) {
+          segment.classList.add(`active-${activeCount}`);
+          if (batteryId - 1 === currentBattery) {
+            segment.classList.add('charging'); // Apply charging only to current
+          }
+        }
+      });
+
+      document.getElementById(`p${batteryId}`).innerText = level + '%';
+
+      const percentRemaining = 100 - level;
+      const totalSeconds = percentRemaining * timePerPercent;
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      document.getElementById(`eta${batteryId}`).innerText =
+        `Estimated time: ${mins}m ${secs}s`;
+    }
+
+    function chargeSequentially() {
+      if (currentBattery >= batteryLevels.length) return;
+
+      clearChargingEffects();
+
+      if (batteryLevels[currentBattery] < 100) {
+        batteryLevels[currentBattery]++;
+        updateBatteryUI(currentBattery + 1);
+      } else {
+        updateBatteryUI(currentBattery + 1); // Final update to remove charging effect
+        currentBattery++;
+      }
+
+      if (currentBattery < batteryLevels.length) {
+        setTimeout(chargeSequentially, delay);
+      }
+    }
+
+    function init() {
+      updateBatteryUI(1);
+      updateBatteryUI(2);
+      updateBatteryUI(3);
+      chargeSequentially();
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>

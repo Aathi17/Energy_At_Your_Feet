@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Applications</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffffff, #ffffff);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 3rem;
+      text-align: center;
+      margin-top: 20px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .application-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .app-card {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+    }
+
+    .app-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      background: #f1fcfc;
+    }
+
+    .app-emoji {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      animation: popIn 1s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .app-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      color: #007777;
+    }
+
+    .popup-message {
+      position: fixed;
+      left: 50%;
+      top: 100px;
+      transform: translateX(-50%);
+      padding: 20px 25px;
+      background-color: #007777;
+      color: white;
+      font-size: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      display: none;
+      opacity: 0;
+      z-index: 999;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .popup-message.active {
+      display: block;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 15px 20px;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .navbar a {
+      color: #007777;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar a:hover {
+      background-color: #ccf2f2;
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="applications.html">Applications</a>
+    <a href="contact.html">Contact</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <h1>Our Applications 🚀</h1>
+
+  <div class="container">
+
+    <!-- Popup -->
+    <div id="popup" class="popup-message"></div>
+
+    <div class="application-grid">
+
+      <div class="app-card" onclick="showPopup('Ultrasound Imaging: Piezoelectric crystals generate and receive sound waves to create internal body images.')">
+        <div class="app-emoji">🩺</div>
+        <h3>Medical Ultrasound</h3>
+        <p>Real-time internal body imaging.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Pacemakers: Advanced pacemakers harvest energy from heartbeats using piezoelectric elements.')">
+        <div class="app-emoji">❤️</div>
+        <h3>Pacemakers</h3>
+        <p>Heartbeat energy harvesting.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Blood Pressure Sensors: Wearable devices continuously monitor arterial pressure using piezo sensors.')">
+        <div class="app-emoji">🩸</div>
+        <h3>Blood Pressure Monitoring</h3>
+        <p>Artery pressure sensing.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Industrial Vibration Monitoring: Detects abnormal machine vibrations to prevent failures.')">
+        <div class="app-emoji">⚙️</div>
+        <h3>Industrial Vibration Sensing</h3>
+        <p>Machine health monitoring.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Structural Health Monitoring: Embedded piezo sensors detect cracks in bridges and buildings.')">
+        <div class="app-emoji">🏗️</div>
+        <h3>Structural Monitoring</h3>
+        <p>Bridge and building stress detection.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Touch Sensors: Smartphones use piezoelectric layers under the screen for precise touch sensing.')">
+        <div class="app-emoji">📱</div>
+        <h3>Touch Sensors</h3>
+        <p>Smartphone pressure detection.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Energy Harvesting Floors: Mechanical movements like walking are converted into electricity.')">
+        <div class="app-emoji">🚶‍♂️</div>
+        <h3>Energy Harvesting Floors</h3>
+        <p>Generate electricity from footsteps.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Street Lighting: Illuminate footpaths using energy from pedestrian footsteps.')">
+        <div class="app-emoji">🌃</div>
+        <h3>Street Lighting</h3>
+        <p>Foot-powered lighting.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Charging Stations: Charge phones in public places using footstep energy.')">
+        <div class="app-emoji">🔋</div>
+        <h3>Charging Stations</h3>
+        <p>Footstep-powered device charging.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Smart Benches: Public seating that powers Wi-Fi and chargers via footsteps.')">
+        <div class="app-emoji">🪑</div>
+        <h3>Smart Benches</h3>
+        <p>Energy-smart seating.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Traffic Sensors: Manage lights and monitor pedestrians using piezo sensors.')">
+        <div class="app-emoji">🚦</div>
+        <h3>Traffic Sensors</h3>
+        <p>Pedestrian and traffic monitoring.</p>
+      </div>
+
+      <div class="app-card" onclick="showPopup('Footstep Counters: Smart floors that count and monitor foot traffic.')">
+        <div class="app-emoji">👣</div>
+        <h3>Footstep Counters</h3>
+        <p>Smart foot traffic analysis.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function showPopup(message) {
+      const popup = document.getElementById('popup');
+      popup.textContent = message;
+      popup.classList.add('active');
+
+      clearTimeout(window.popupTimeout);
+      window.popupTimeout = setTimeout(() => {
+        popup.classList.remove('active');
+      }, 4000); // 4 seconds visible
+    }
+  </script>
+
+</body>
+</html>
